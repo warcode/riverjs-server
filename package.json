@@ -1,0 +1,10 @@
+{ "name" : "riverjs"
+, "version" : "1.0.0"
+, "dependencies" : { 
+	"oauth" : "0.9.10",
+	"redis" : "0.8.4",
+	"request" : "2.22.0",
+	"restify" : "2.6.0",
+	"socket.io" : "0.9.16",
+	} 
+}
