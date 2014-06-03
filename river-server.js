@@ -24,7 +24,7 @@ store.on("error", function (err) {
 
 
 var server = restify.createServer();
-server.use(restify.bodyParser()); //{ mapParams: false })
+server.use(restify.bodyParser());
 server.use(restify.queryParser());
 server.use(restify.jsonp());
 server.use(restify.CORS());
@@ -34,23 +34,10 @@ server.use(restify.fullResponse());
 var io = socketio.listen(server);
 io.set('log level', 1);
 
-//console.log(oauth);
-
-//"http%3A%2F%2Ffire.warcode.net%3Aoauth%3Aauthorize"
-
 var authtokens = [];
 var users = { };
 var sockets = { };
 
-/*
-console.log('Getting users object from store');
-store.get("users", function(err, res) {
-  if(res !== null) {
-    users = JSON.parse(res);
-    console.log('Got users object');
-  }
-});
-*/
 
 function respond(req, res, next) {
   res.send('hello ' + req.params.name);
@@ -62,7 +49,6 @@ function stats(req, res, next) {
 };
 
 function authorize(req, res, next) {
-  //console.log('token: %s, secret: %s', req.query.oauth_token, req.query.oauth_token_secret);
 
   if(authtokens[req.query.oauth_token] !== null) {
       var user_token = authtokens[req.query.oauth_token];
@@ -78,15 +64,6 @@ function authorize(req, res, next) {
           users[user_token].oauth_access_token_secret = oauth_access_token_secret;
           users[user_token].hasTwitterAuth = true;
 
-          //console.log(circular.stringify(users));
-
-          //store.set("users", circular.stringify(users));
-          /*
-          store.get("users", function(err, res) {
-            users = JSON.parse(res);
-            console.log(users);
-          });
-          */
           console.log('Authorized user: %s', user_token);
 
           res.header('Location', 'https://deny.io/river/');
@@ -125,7 +102,6 @@ function oauth_login(req, res, next) {
 
           authtokens[oauth_token] = user_token;
 
-          //console.log(session_oauth);
           console.log('Attempting to authorize user: %s', user_token);
 
           res.header('Location', 'https://api.twitter.com/oauth/authorize?oauth_token='+oauth_token);
@@ -145,19 +121,12 @@ function oauth_login(req, res, next) {
 };
 
 function login(req, res, next) {
-  //console.log('params:');
-  //console.log(req.params);
 
   if(req.params.login_token)
   {
     if(users[req.params.login_token])
     {
-      /*
-      console.log('users entry:');
-      console.log(users[req.params.login_token]);
-      console.log('user exists for token %s', req.params.login_token);
-      */
-      //var user = users[req.params.login_token];
+
       res.json(200, {
         login_token: req.params.login_token,
         hasTwitterAuth: users[req.params.login_token].hasTwitterAuth
@@ -359,7 +328,6 @@ function tweet(req, res, next) {
 
       if(users[user_token].hasTwitterAuth) {
           //console.log('Sending twitter message for %s', user_token);
-          //console.log('[Message] %s', req.params.message);
 
           var reqdata = {};
           reqdata.status = req.params.message
