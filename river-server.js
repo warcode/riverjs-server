@@ -293,11 +293,11 @@ function parse_stream(user, data) {
     //ignore
   } else if (json_object.limit) {
     //emit warning about limit
-    console.log('Limit: %d', json_object.limit.track)
+    console.log('Limit: %d', json_object.limit.track);
 
   } else if (json_object.disconnect) {
     //emit warning about disconnect
-    console.log('Disconnect - Code %d - Reason: %s', json_object.disconnect.code, json_object.disconnect.reason)
+    console.log('Disconnect - Code %d - Reason: %s', json_object.disconnect.code, json_object.disconnect.reason);
 
   } else if (json_object.friends) {
     //ignore
@@ -330,7 +330,7 @@ function tweet(req, res, next) {
           //console.log('Sending twitter message for %s', user_token);
 
           var reqdata = {};
-          reqdata.status = req.params.message
+          reqdata.status = req.params.message;
 
           oauth.post('https://api.twitter.com/1.1/statuses/update.json', users[user_token].oauth_access_token, users[user_token].oauth_access_token_secret, reqdata,
             function (e, data, resp){
