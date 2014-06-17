@@ -4,7 +4,7 @@ var request = require('request');
 var OAuth = require('oauth');
 var redis = require("redis");
 var circular = require("circular-json");
-var config = require('./config')
+var config = require('./config');
 
 
 var oauth = new OAuth.OAuth(
