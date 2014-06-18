@@ -41,7 +41,7 @@ var sockets = {};
 
 function respond(req, res, next) {
     res.send('hello ' + req.params.name);
-};
+}
 
 function stats(req, res, next) {
     var statistics = {
@@ -49,7 +49,7 @@ function stats(req, res, next) {
         streams: Object.keys(sockets).length
     };
     res.send(200, statistics);
-};
+}
 
 function authorize(req, res, next) {
 
@@ -77,7 +77,7 @@ function authorize(req, res, next) {
     } else {
         res.send(400, '');
     }
-};
+}
 
 
 
@@ -119,7 +119,7 @@ function oauth_login(req, res, next) {
         res.send(400, '');
     }
 
-};
+}
 
 function login(req, res, next) {
 
@@ -142,7 +142,7 @@ function login(req, res, next) {
 
         res.send(303, '');
     }
-};
+}
 
 function register(req, res, next) {
     //console.log('making new user');
@@ -158,7 +158,7 @@ function register(req, res, next) {
 
     console.log('Created new user: %s', circular.stringify(user_data));
     res.json(201, user_data);
-};
+}
 
 function logout(req, res, next) {
     if (req.params.login_token) {
@@ -167,13 +167,13 @@ function logout(req, res, next) {
         console.log('Deleted user: %s', req.params.login_token);
     }
     res.send(200, '');
-};
+}
 
 function generateToken(bytes) {
     var token = require('crypto').randomBytes(bytes).toString('hex');
 
     return token;
-};
+}
 
 
 function timeline(req, res, next) {
@@ -213,7 +213,7 @@ function timeline(req, res, next) {
     } else {
         res.send(400, '');
     }
-};
+}
 
 function userstream(req, res, next) {
 
@@ -272,7 +272,7 @@ function userstream(req, res, next) {
             }
         }
     }
-};
+}
 
 function parse_stream(user, data) {
     var json_object = JSON.parse(data);
@@ -313,7 +313,7 @@ function parse_stream(user, data) {
 
     }
 
-};
+}
 
 
 function tweet(req, res, next) {
@@ -350,7 +350,7 @@ function tweet(req, res, next) {
     } else {
         res.send(400, '');
     }
-};
+}
 
 var streamsockets = io.of('/river/user/stream/socket').on('connection', function(socket) {
     var socket_id = generateToken(32);
