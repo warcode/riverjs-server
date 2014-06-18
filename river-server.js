@@ -1,4 +1,4 @@
-/*jshint node: true, noempty: false*/
+/*jshint node: true, noempty: false, unused: false*/
 var restify = require('restify');
 var socketio = require('socket.io');
 var request = require('request');
