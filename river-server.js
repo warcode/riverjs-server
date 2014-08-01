@@ -463,6 +463,7 @@ server.get('/river/register', register);
 server.post('/river/logout', logout);
 server.get('/river/user/timeline', timeline);
 server.get('/river/user/stream', userstream);
+server.get('river/user/streamkeyword', keywordstream);
 server.post('/river/user/tweet', tweet);
 server.get('/river/stats', stats);
 
