@@ -242,6 +242,10 @@ function keywordstream(req, res, next) {
 
                     response.setEncoding('utf8');
 
+                    response.addListener("error", function(error){
+                        console.log(error);
+                    });
+
                     response.addListener("data", function(chunk) {
 
                         buffer += chunk;
