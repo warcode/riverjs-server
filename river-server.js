@@ -223,7 +223,8 @@ function keywordstream(req, res, next) {
 
             var user_token = req.params.login_token;
             if (users[user_token]) {
-                var stream = oauth.post("https://stream.twitter.com/1.1/statuses/filter.json?track=%23LCS", users[user_token].oauth_access_token, users[user_token].oauth_access_token_secret);
+                var keyword = encodeURIComponent(req.params.keyword);
+                var stream = oauth.post("https://stream.twitter.com/1.1/statuses/filter.json?track="+keyword, users[user_token].oauth_access_token, users[user_token].oauth_access_token_secret);
 
                 console.log('Created keyword stream for %s', user_token);
                 res.send(201, 'Created stream');
