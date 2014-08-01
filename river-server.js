@@ -216,6 +216,66 @@ function timeline(req, res, next) {
     }
 }
 
+function keywordstream(req, res, next) {
+
+    if (req.params.login_token) {
+        if (!users[req.params.login_token].stream) {
+
+            var user_token = req.params.login_token;
+            if (users[user_token]) {
+                var stream = oauth.post("https://stream.twitter.com/1.1/statuses/filter.json", users[user_token].oauth_access_token, users[user_token].oauth_access_token_secret, "track=#Magic2015");
+
+                console.log('Created keyword stream for %s', user_token);
+                res.send(201, 'Created stream');
+
+                users[user_token].stream = stream;
+
+                // Response Parsing -------------------------------------------- //
+
+                var clients = [];
+                var buffer = "";
+                var delim = /\n*\r\n*/;
+
+                stream.addListener('response', function(response) {
+
+                    //console.log('Stream active.');
+
+                    response.setEncoding('utf8');
+
+                    response.addListener("data", function(chunk) {
+
+                        buffer += chunk;
+                        var parts = buffer.split(delim);
+                        var len = parts.length;
+
+                        if (len > 1) {
+                            buffer = parts[len - 1];
+                            for (var i = 0, end = len - 1; i < end; ++i) {
+                                var entry = parts[i];
+                                if (entry !== "") {
+                                    //console.log("Entry: '"+entry+"'");
+                                    parse_stream(user_token, entry);
+                                }
+                            }
+                        }
+                    });
+
+                    response.addListener("end", function(message) {
+                        users[user_token].stream = null;
+                        users[user_token].socket.emit('end', message);
+                        console.log('End: %s', message);
+                        console.log('--- END ---');
+                    });
+
+                });
+
+                stream.end();
+            }
+        }
+    }
+}
+
+
 function userstream(req, res, next) {
 
     if (req.params.login_token) {
