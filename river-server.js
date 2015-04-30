@@ -291,7 +291,10 @@ function userstream(req, res, next) {
                 var stream = oauth.get("https://userstream.twitter.com/1.1/user.json?with=followings", users[user_token].oauth_access_token, users[user_token].oauth_access_token_secret);
 
                 console.log('Created stream for %s', user_token);
-                res.send(201, 'Created stream');
+                if(res)
+                {
+                    res.send(201, 'Created stream');
+                }
 
                 users[user_token].stream = stream;
 
@@ -308,7 +311,7 @@ function userstream(req, res, next) {
                     response.setEncoding('utf8');
 
                     response.addListener("data", function(chunk) {
-
+                        
                         buffer += chunk;
                         var parts = buffer.split(delim);
                         var len = parts.length;
@@ -326,10 +329,13 @@ function userstream(req, res, next) {
                     });
 
                     response.addListener("end", function(message) {
+                        setTimeout(userstream(req, null, null), 10000);
+                        /*
                         users[user_token].stream = null;
                         users[user_token].socket.emit('end', message);
                         console.log('End: %s', message);
                         console.log('--- END ---');
+                        */
                     });
 
                 });
