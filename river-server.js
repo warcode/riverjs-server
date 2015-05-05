@@ -329,7 +329,7 @@ function userstream(req, res, next) {
                     });
 
                     response.addListener("end", function(message) {
-                        setTimeout(userstream(req, null, null), 10000);
+                        //setTimeout(userstream(req, null, null), 10000);
  
                         users[user_token].stream = null;
                         users[user_token].socket.emit('end', message);
